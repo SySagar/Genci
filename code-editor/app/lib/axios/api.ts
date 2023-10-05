@@ -1,13 +1,11 @@
-import useAxiosAuthorized from "./hooks/useAxiosAuthorized";
-import axios, { AxiosInstance, AxiosProgressEvent } from "axios";
+import axios, { AxiosInstance } from "axios";
 import CreateUserData from "./types/signupTypes";
 import LoginData from "./types/loginType";
 import profileTypes from "./types/profileTypes";
 import Cookies from "js-cookie";
-import refresh from "./hooks/useRefreshToken";
 
 const APIInstance: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL
 });
 
 const AuthorizedAPIInstance: AxiosInstance = axios.create({
@@ -27,8 +25,11 @@ const APIMethods = {
     login: (data: LoginData) =>{return  APIInstance.post("/auth/login", data)},
     signUp: (data: CreateUserData) =>{console.log(data); APIInstance.post("/auth/register", data)},
   },
-  dashboard: {
-    dashboard: () => AuthorizedAPIInstance.get("/dashboard"),
+  user:{
+    verify: () => {return AuthorizedAPIInstance.post("/user/verify")},
+  },
+  playgrounds: {
+    createRoom: () => {return AuthorizedAPIInstance.get("/playgrounds/createRoom")},
   },
   profile: {
     profile: (data: profileTypes) => {

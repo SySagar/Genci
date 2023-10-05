@@ -1,27 +1,39 @@
+import { Padding } from "@mui/icons-material";
 import {
     Avatar,
     Button,
     Stack,
+    Typography,
   } from "@mui/material";
   import Link from '@mui/material/Link';
-  
+  import CodeIcon from '@mui/icons-material/Code';
   
   const AuthorizedActions = () => {
    
   
     return (
       <Stack direction={"row"} justifyContent={"center"} alignItems={"center"} gap={3}>
-       <Stack direction={'row'} alignItems={'center'} gap={1}>
-        <img
+       <Stack direction={'row'}
+        alignItems={'center'
+      } gap={1}
+      sx={{
+        '&:hover': {
+          cursor: 'pointer',
+          color: '#FF8766',
+        }
+      }}
+        padding={1}>
+        {/* <img
         style={{
           width: '20px',
           height: '20px',
         }}
-         src="/editor.png" alt="" />
-       <Button
+         src="/editor.png" alt="" /> */}
+        <CodeIcon/>
+       <Typography variant={'body1'}
        >
         Code
-       </Button>
+       </Typography>
        </Stack>
 
        <Stack>

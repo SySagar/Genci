@@ -11,6 +11,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@monaco-editor/react": "^4.5.2",
     "@mui/icons-material": "^5.14.11",
     "@mui/material": "^5.14.11",
     "@next/font": "^13.5.3",
@@ -22,6 +23,7 @@
     "react": "latest",
     "react-dom": "latest",
     "react-hot-toast": "^2.4.1",
+    "uuid": "^9.0.1",
     "zod-formik-adapter": "^1.2.0",
     "zustand": "^4.4.1"
   },
@@ -30,6 +32,7 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "@types/uuid": "^9.0.4",
     "typescript": "latest"
   }
 }

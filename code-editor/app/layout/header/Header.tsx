@@ -1,9 +1,31 @@
 import { Link, Stack, Typography } from "@mui/material";
 import HeaderActions from "./HeaderActions";
-import Cookies from "js-cookie";
+import { useEffect,useState } from "react";
+import { APIMethods } from "@/app/lib/axios/api";
 
 export default function Header() {
-  const token = Cookies.get('accessToken');
+  const [verifiedToken, setVerifiedToken] = useState(null);
+ 
+  const verifyToken = async () => {
+    try {
+      const response : any = await APIMethods.user.verify();
+      console.log(response);
+      return response.status;  // Assuming response contains the relevant token verification data
+    } catch (error) {
+      console.error("Error verifying token:", error);
+      return null;  // Return null in case of an error
+    }
+  };
+
+  useEffect(() => {
+    // Verify the token and update the state accordingly
+    const fetchTokenVerification = async () => {
+      const result = await verifyToken();
+      setVerifiedToken(result);
+    };
+
+    fetchTokenVerification();
+  }, []);
 
   return (
     <Stack
@@ -15,6 +37,7 @@ export default function Header() {
       borderColor={"#E0E0E0"}
       position={"sticky"}
       top={0}
+      zIndex={50}
       sx={
         {
           background: "#F5F5F5",
@@ -46,7 +69,7 @@ export default function Header() {
 
         <Stack>
           <HeaderActions>
-            {token ? (
+            {verifiedToken ? (
               <HeaderActions.AuthorizedActions />
             ) : (
               <HeaderActions.UnAuthorizedActions />

@@ -12,7 +12,6 @@ export default function SharedLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
         <AppTheme>
             <Toaster position="top-center"></Toaster>
             <Stack minHeight={"100vh"} sx={{background:'#F5F5F5'}}>
@@ -23,6 +22,5 @@ export default function SharedLayout({
               </Stack>
             </Stack>
         </AppTheme>
-    </html>
   );
 }

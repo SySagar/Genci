@@ -7,3 +7,6 @@
 
 # Ignore .env files in all subdirectories
 **/.env
+
+/code-editor/.next
+**/.next

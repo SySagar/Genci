@@ -10,6 +10,8 @@
     "paths": {
       "@models/*": ["./schema/*"],
       "@auth/*": ["./api/auth/*"],
+      "@user/*": ["./api/user/*"],
+      "@playgrounds/*": ["./api/playgrounds/*"],
       "@config/*": ["./config/*"],
       "@utils/*": ["./utils/*"]
     }

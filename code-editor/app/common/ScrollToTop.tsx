@@ -37,14 +37,14 @@ export default function ScrollToTop() {
           zIndex={1}
           sx={{
             borderRadius: "100%",
-            padding: "4px",
+            padding: "6px",
             background: "black",
             width: "fit-content",
-            height: "33px",
+            height: "25px",
           }}
         >
           <div onClick={scrollToTop}>
-            <ArrowUpwardIcon color="secondary" />
+            <ArrowUpwardIcon sx={{color:'#fff'}} />
           </div>
         </Box>
       )}

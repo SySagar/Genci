@@ -2,6 +2,10 @@ import express, { urlencoded } from "express";
 import cors from "cors";
 import DBConnect from "@config/db";
 import authRoutes from "@auth/index";
+import validateRoutes from "@user/index";
+import playgroundsRoutes from "@playgrounds/index";
+import apiRateLimiter from "@config/rateLimit";
+
 require("dotenv").config();
 
 const app = express();
@@ -31,6 +35,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", authRoutes);
+app.use("/user", validateRoutes);
+app.use("/playgrounds", apiRateLimiter, playgroundsRoutes);
 
 app.listen(5000, () => {
   console.log("🚀 Server running at port 5000");

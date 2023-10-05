@@ -4,10 +4,16 @@ import React from 'react'
 import { APIMethods } from '@/app/lib/axios/api'
 import roomTypes from './types/roomTypes'
 import { toast } from "react-hot-toast";
+import { useRouter } from 'next/navigation'
 
 export default function page() {
 
   const [roomId, setRoomId] = React.useState<string|undefined>('');
+  const router = useRouter()
+  const openPlaygrounds = () => {
+    router.push(`/battlegrounds/${roomId}`)
+  }
+
   const generateRoom = () => {
 
     try {
@@ -73,6 +79,17 @@ export default function page() {
       <Typography component={Button} onClick={generateRoom}>
         Generate room
       </Typography>
+
+      <Stack width={'100%'} justifyContent={'center'} alignItems={'center'}>
+        <Button
+        onClick={openPlaygrounds} 
+        disabled={roomId == '' ? true : false}
+        sx={{
+          minWidth: '140px',
+        }}>
+          Join
+        </Button>
+      </Stack>
       </Stack>
     </Stack>
   )

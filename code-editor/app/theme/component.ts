@@ -18,6 +18,10 @@ const componentOverrides: any = {
           "&:hover": {
             background: "#0d0d0d",
           },
+          '&.Mui-disabled': {
+            backgroundColor: "#B6B6B4",
+            color: " #696969",
+          },
         },
       },
     },

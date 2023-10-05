@@ -6,24 +6,23 @@ import QuestionBox from "./QuestionBox";
 import React, { useEffect } from "react";
 import Timer from "./Timer";
 import useEndTime from "../hooks/useEndTime";
-import { toast } from "react-hot-toast";
 
 export default function Battlegrounds() {
   const [active] = useEndTime((state: any) => [state.active]);
 
-  useEffect(() => {
-    console.log("joined");
-    toast.success("You have joined the room!", {
-      style: {
-        padding: '16px',
-        color: '#0D0D0D',
-      },
-      iconTheme: {
-        primary: 'green',
-        secondary: '#FFFAEE',
-      },
-    });
-  },[])
+  // useEffect(() => {
+  //   console.log("joined");
+  //   toast.success("You have joined the room!", {
+  //     style: {
+  //       padding: '16px',
+  //       color: '#0D0D0D',
+  //     },
+  //     iconTheme: {
+  //       primary: 'green',
+  //       secondary: '#FFFAEE',
+  //     },
+  //   });
+  // },[])
 
   return (
     <Stack direction={"row"} position={"relative"}>

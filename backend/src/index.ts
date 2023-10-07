@@ -15,7 +15,8 @@ app.use(urlencoded({
 	extended: true
 }))
 
- const whitelist = ['http://localhost:3000'];
+ const whitelist = ['http://localhost:3000',
+"https://genci-three.vercel.app"];
 app.use(cors({
   credentials: true,
 	origin: function(origin, callback) {

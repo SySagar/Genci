@@ -19,11 +19,11 @@ const PlaygrounQuestion = new mongoose.Schema({
   testCases: [
     {
       input: {
-        type: Object,
+        type: String,
         required: true,
       },
-      expectedOutput: {
-        type: Object, 
+      output: {
+        type: String, 
         required: true,
       },
     }],

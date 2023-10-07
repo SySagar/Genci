@@ -3,6 +3,7 @@ import {
   AvatarGroup,
   Box,
   Button,
+  CircularProgress,
   Divider,
   Stack,
   Tab,
@@ -21,6 +22,10 @@ import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import playerStyles from "../battlegrounds.module.css";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import useEditorContent from "../hooks/useEditorContent";
+import { APIMethods } from "@/app/lib/axios/api";
+import { useParams, useSearchParams } from 'next/navigation'
+import toast from "react-hot-toast";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -52,10 +57,63 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 export default function Sidebar() {
+  const [loading, setLoading] = React.useState(false);
   const [value, setValue] = React.useState(0);
+  const [pass, setPass] = React.useState(false);
+  const [content,language] = useEditorContent((state: any) => [state.content,state.language]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
+  };
+  const params = useParams()
+
+
+  const executeCode = async () => {
+    setLoading(true);
+
+    const code = content;
+    const data = {
+      code: code,
+      language: language,
+      roomId: params.userID 
+      // params.userID
+    };
+    await APIMethods.playgrounds.executeCode(data).then((res) => {
+      console.log("result",res.data.message); 
+      if(res.data.message === "success"){
+        setPass(true);
+        toast.success("All test cases passed!", {
+          style: {
+            padding: '16px',
+            color: '#6FD392',
+          },
+          iconTheme: {
+            primary: '#6FD392',
+            secondary: '#DAF4E3',
+          },
+        });
+      }
+      else
+      {
+        setPass(false);
+        toast.error(res.data.message, {
+          style: {
+            padding: '16px',
+            color: '#0D0D0D',
+          },
+          iconTheme: {
+            primary: 'red',
+            secondary: '#FFFAEE',
+          },
+        });
+      }
+    }
+    ).catch((err) => {
+      console.log(err);
+    }).finally(() => {
+      setLoading(false);
+    });
+
   };
 
   return (
@@ -166,11 +224,18 @@ export default function Sidebar() {
 
       <Stack paddingY={5} alignItems={"center"}>
         <Button
+        onClick={executeCode}
           variant="contained"
           sx={{ maxWidth: "160px" }}
-          endIcon={<ArrowForwardIcon />}
+          endIcon={
+            !loading &&<ArrowForwardIcon />}
         >
-          Execute
+          {
+            loading ? 
+            <CircularProgress /> 
+            :
+            "Execute"
+          }
         </Button>
       </Stack>
     </Stack>

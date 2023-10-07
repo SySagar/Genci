@@ -1,8 +1,9 @@
+import playground from "@models/playground";
 import PlaygroundQuestion from "@models/playground";
 
 export const getQuestions = async (roomId: string) => {
     try {
-        const questionData = await PlaygroundQuestion.find({roomId});
+        const questionData = await playground.find({roomId:roomId});
         return questionData;
       } catch (error) {
         console.log(error);
@@ -24,8 +25,14 @@ export const createQuestion = async (questionData: any) => {
 
 export const getComparedResult = async (compiledResult:any,input:any,roomId:any) => {
     try {
-        const expectedOutput = await PlaygroundQuestion.find({roomId}).where('testCases.input').equals(input);
-        if(expectedOutput[0].testCases[0].expectedOutput === compiledResult)
+      roomId = "12345"
+        console.log('compiledResult', compiledResult)
+        console.log('input', input)
+        console.log('roomId', roomId)
+
+        const expectedOutput = await playground.find({roomId}).select('testcases')
+        console.log('expectedOutput', expectedOutput)
+        if(expectedOutput[0].testCases[0].output === compiledResult)
         {
             const result = await PlaygroundQuestion.updateOne({roomId},{$inc:{solvers:1}});
             return true;

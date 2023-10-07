@@ -30,6 +30,9 @@ const APIMethods = {
   },
   playgrounds: {
     createRoom: () => {return AuthorizedAPIInstance.get("/playgrounds/createRoom")},
+    executeCode: (data: any) => { return AuthorizedAPIInstance.post("/playgrounds/results", data)},
+    populatePlayground: (data: any) => { console.log(data); return AuthorizedAPIInstance.post("/playgrounds/populatePlayground", data)},
+    createPlayground: (data: any) => { return AuthorizedAPIInstance.post("/playgrounds/createPlayground", data)},
   },
   profile: {
     profile: (data: profileTypes) => {

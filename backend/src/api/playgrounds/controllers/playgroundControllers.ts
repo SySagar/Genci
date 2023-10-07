@@ -21,12 +21,24 @@ const generateRoom = async (req:any, res:any) => {
 
 const populatePlayground = async (req:any, res:any) => {
     try {
-        const { roomId } = req.query;
+        const { roomId } = req.body;
         console.log('roomId', roomId)
 
-        const questions = await getQuestions(roomId);
-        console.log('questions', questions)
+        
+        const questions = async ()=>await getQuestions(roomId);
 
+        questions().then((response) => {
+            console.log('response', response)
+            res.send({
+                status: '200',
+                message: 'success',
+                questions: response
+            })
+        }
+        ).catch((error) => {
+            console.error(error);
+        }
+    );
         
     } catch (error) {
         console.log(error)
@@ -69,40 +81,76 @@ const getResult = async (req:any, res:any) => {
     try {
       const {
         code,
-        input,
         language,
-        roomId
+        roomId,
       } = req.body;
 
-      const options = {
-        method: 'POST',
-        url: 'https://online-code-compiler.p.rapidapi.com/v1/',
-        headers: {
-          'content-type': 'application/json',
-          'X-RapidAPI-Key': process.env.RAPID_API_KEY,
-          'X-RapidAPI-Host': 'online-code-compiler.p.rapidapi.com'
-        },
-        data: {
-          language: language,
-          version: 'latest',
-          code: code,
-          input: null
-        }
-      };
+      const playground = await getQuestions(roomId);
+
+
+      const testcases = playground[0].testCases;
+        console.log('testcases', testcases)
+      const results = [];
+      var testFailed = false;
       
       try {
-          const response = await axios.request(options);
-          console.log(response.data);
+        for (let i = 0; i < testcases.length; i++) {
+            const singleTestcase = testcases[i];
+            const options = {
+                method: 'POST',
+                url: 'https://online-code-compiler.p.rapidapi.com/v1/',
+                headers: {
+                  'content-type': 'application/json',
+                  'X-RapidAPI-Key': process.env.RAPID_API_KEY,
+                  'X-RapidAPI-Host': 'online-code-compiler.p.rapidapi.com'
+                },
+                data: {
+                  language: language as string,
+                  version: 'latest',
+                  code: code as string,
+                  input:  singleTestcase.input
+                }
+              };
+              
+              const compileOutput =async ()=> await axios.request(options);
+              compileOutput().then((response) => {
+                  const compiledOutput = response.data.output as string;
+                  const expectedOutput = singleTestcase.output as string;
+                 
+                      const isPassed = compiledOutput.trim() == expectedOutput.trim();
+                      console.log('isPassed', isPassed)
+                      if(isPassed)
+                      {
+                          results.push(true);
+                          res.send({
+                            message: 'success'
+                        })
+                        }
+                        else
+                        {
+                            results.push(false);
+                            testFailed = true;
+                            res.send({
+                                message: `Testcase ${i+1} failed`
+                            })
+                        }
+                        
+                    
+                    }
+                ).catch((error) => {
+                    console.error(error);
+                }
+            );
 
-          const testAgainst = getComparedResult(response.data.output,input,roomId);
-          console.log('testAgainst', testAgainst)
-      } catch (error) {
-          console.error(error);
-      }
-        
+        }
+        //   console.log('testAgainst', testAgainst)
     } catch (error) {
-        console.log(error)
-        res.send({
+        console.error(error);
+    }
+
+} catch (error) {
+    console.log(error)
+    res.send({
             status: '500',
             message: 'Internal server error'
         })

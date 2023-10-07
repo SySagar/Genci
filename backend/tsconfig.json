@@ -12,6 +12,7 @@
       "@auth/*": ["./api/auth/*"],
       "@user/*": ["./api/user/*"],
       "@playgrounds/*": ["./api/playgrounds/*"],
+      "@welcome/*": ["./api/welcome/*"],
       "@config/*": ["./config/*"],
       "@utils/*": ["./utils/*"]
     }

@@ -4,6 +4,7 @@ import DBConnect from "@config/db";
 import authRoutes from "@auth/index";
 import validateRoutes from "@user/index";
 import playgroundsRoutes from "@playgrounds/index";
+import welcomeRoutes from "@welcome/index";
 import apiRateLimiter from "@config/rateLimit";
 
 require("dotenv").config();
@@ -29,14 +30,10 @@ app.use(cors({
 
 DBConnect();
 
-
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
-
 app.use("/auth", authRoutes);
 app.use("/user", validateRoutes);
 app.use("/playgrounds", apiRateLimiter, playgroundsRoutes);
+app.use("/welcome", welcomeRoutes);
 
 app.listen(5000, () => {
   console.log("🚀 Server running at port 5000");
